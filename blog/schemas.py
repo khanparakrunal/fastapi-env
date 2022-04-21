@@ -1,11 +1,14 @@
 import email
 from pydantic import BaseModel
-
+from typing import List
 
 
 class Blog(BaseModel):
     title:str
     body:str
+
+    class Config():
+        orm_mode=True
 
 class User(BaseModel):
     
@@ -16,5 +19,13 @@ class User(BaseModel):
 class ShowUser(BaseModel):
     name:str
     email:str
+    blogs:List
+    class Config():
+        orm_mode=True
+
+class ShowBlog(BaseModel):
+    title:str
+    body:str
+    author: ShowUser
     class Config():
         orm_mode=True

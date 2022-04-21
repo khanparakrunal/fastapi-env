@@ -1,11 +1,13 @@
 from fastapi import FastAPI,Depends,status,Response,HTTPException
 from matplotlib.pyplot import show, title
 from requests import Session
-from schemas import Blog,User,ShowUser
+from schemas import Blog,User,ShowUser,ShowBlog
 import models
 from database import engine,SessionLocal 
 from hashing import Hash
 app= FastAPI()
+
+
 
 
 models.Base.metadata.create_all(engine)
@@ -23,7 +25,7 @@ def all(db:Session =Depends(get_db)):
     return blogs
     
 
-@app.get('/blog/{id}',status_code=200,tags=['blogs'])
+@app.get('/blog/{id}',status_code=200,tags=['blogs'],response_model=ShowBlog)
 def getblog(id,response: Response,db:Session =Depends(get_db)):
     blog= db.query(models.Blog).filter(models.Blog.id==id).first()
     if not blog:
@@ -36,7 +38,7 @@ def getblog(id,response: Response,db:Session =Depends(get_db)):
 
 @app.post('/blog',status_code=status.HTTP_201_CREATED,tags=['blogs'])
 def create(request: Blog,db:Session =Depends(get_db)):
-    new_blog= models.Blog(title=request.title, body=request.body)
+    new_blog= models.Blog(title=request.title, body=request.body,user_id=1)
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
