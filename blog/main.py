@@ -3,14 +3,19 @@ from matplotlib.pyplot import show, title
 from requests import Session
 from schemas import Blog,User,ShowUser,ShowBlog
 import models
-from database import engine,SessionLocal 
+from database import engine,get_db
 from hashing import Hash
+from routers import blog
+
 app= FastAPI()
 
 
 
 
 models.Base.metadata.create_all(engine)
+
+
+
 
 def get_db():
     db= SessionLocal()
