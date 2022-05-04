@@ -7,6 +7,7 @@ from database import engine,get_db
 from hashing import Hash
 from routers import blog
 
+
 app= FastAPI()
 
 
